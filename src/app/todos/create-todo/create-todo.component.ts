@@ -38,7 +38,10 @@ export class CreateTodoComponent implements OnDestroy {
     this.subscriptions.push(
       this.todosService
         .addTodo(addTodo)
-        .subscribe({ next: () => this.todosService.getTodos().subscribe() })
+        .subscribe({
+          next: () =>
+            this.subscriptions.push(this.todosService.getTodos().subscribe()),
+        })
     );
   }
 

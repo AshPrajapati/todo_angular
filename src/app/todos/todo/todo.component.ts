@@ -49,7 +49,10 @@ export class TodoComponent implements OnDestroy {
     this.subscriptions.push(
       this.todosService
         .updateTodo(updateTodo.todoTextToUpdate, updateTodo.id)
-        .subscribe({ next: () => this.todosService.getTodos().subscribe() })
+        .subscribe({
+          next: () =>
+            this.subscriptions.push(this.todosService.getTodos().subscribe()),
+        })
     );
   }
 
@@ -57,7 +60,10 @@ export class TodoComponent implements OnDestroy {
     this.subscriptions.push(
       this.todosService
         .deleteTodo(id)
-        .subscribe({ next: () => this.todosService.getTodos().subscribe() })
+        .subscribe({
+          next: () =>
+            this.subscriptions.push(this.todosService.getTodos().subscribe()),
+        })
     );
   }
 
