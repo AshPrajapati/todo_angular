@@ -29,7 +29,7 @@ export class TodosComponent implements OnInit, OnDestroy {
     );
   }
 
-  onDelete(id: number): void {
+  deleteTodo(id: number): void {
     this.subscriptions.push(
       this.todosService.deleteTodo(id).subscribe(() => {
         this.fetchTodos();

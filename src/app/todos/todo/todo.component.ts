@@ -13,17 +13,17 @@ export class TodoComponent {
     id: number;
   }>();
   @Output() deleteTodo = new EventEmitter<number>();
-  toUpdateTodoText: string = '';
+  todoTextToUpdate: string = '';
   isUpdatingTodoText: boolean = false;
 
   onClickUpdateBtn() {
     this.isUpdatingTodoText = true;
-    this.toUpdateTodoText = this.todo.todoText;
+    this.todoTextToUpdate = this.todo.todoText;
   }
 
   onUpdateTodoText(id: number) {
-    this.updateTodo.emit({ todoTextToUpdate: this.toUpdateTodoText, id: id });
-    this.toUpdateTodoText = '';
+    this.updateTodo.emit({ todoTextToUpdate: this.todoTextToUpdate, id: id });
+    this.todoTextToUpdate = '';
     this.isUpdatingTodoText = false;
   }
 
