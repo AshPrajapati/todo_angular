@@ -3,14 +3,24 @@
     Create New Todo
   </button>
   <div *ngIf="isCreateTodoSectionOpen">
-    <input type="text" placeholder="todo text" [(ngModel)]="toCreateTodoText" />
-    <button
-      class="btn btn-primary"
-      (click)="onAddTodoText()"
-      [disabled]="!toCreateTodoText"
-    >
-      Add
-    </button>
-    <button class="btn btn-danger" (click)="onCloseTodoText()">Close</button>
+    <form [formGroup]="createTodoForm" (ngSubmit)="onAddTodoText()">
+      <input
+        type="text"
+        placeholder="todo text"
+        formControlName="toCreateTodoText"
+      />
+      <select formControlName="category" class="dropdown">
+        <option value="" disabled>Select a category</option>
+        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      </select>
+      <button
+        class="btn btn-primary"
+        type="submit"
+        [disabled]="createTodoForm.invalid"
+      >
+        Add
+      </button>
+      <button class="btn btn-danger" type="button" (click)="onCloseTodoText()">Close</button>
+    </form>
   </div>
 </div>

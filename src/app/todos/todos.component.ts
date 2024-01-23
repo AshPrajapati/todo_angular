@@ -15,9 +15,9 @@ export class TodosComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.fetchTodos();
   }
-  addTodo(todoText: string) {
+  addTodo(addTodo: { toCreateTodoText: string; category: string }) {
     this.subscriptions.push(
-      this.todosService.addTodo(todoText).subscribe(() => this.fetchTodos())
+      this.todosService.addTodo(addTodo).subscribe(() => this.fetchTodos())
     );
   }
 

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create-todo',
@@ -7,14 +8,28 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class CreateTodoComponent {
   isCreateTodoSectionOpen: boolean = false;
-  toCreateTodoText: string = '';
-  @Output() addTodo = new EventEmitter<string>();
+  categories: string[] = ['Personal', 'Work', 'Study', 'Other'];
+  createTodoForm: FormGroup;
+  @Output() addTodo = new EventEmitter<{
+    toCreateTodoText: string;
+    category: string;
+  }>();
+
+  constructor(private fb: FormBuilder) {
+    this.createTodoForm = this.fb.group({
+      toCreateTodoText: ['', Validators.required],
+      category: ['', Validators.required],
+    });
+  }
   onClickCreateNewTodo() {
     this.isCreateTodoSectionOpen = true;
   }
   onAddTodoText() {
-    this.addTodo.emit(this.toCreateTodoText);
-    this.toCreateTodoText = '';
+    this.addTodo.emit({
+      toCreateTodoText: this.createTodoForm.get('toCreateTodoText')?.value,
+      category: this.createTodoForm.get('category')?.value,
+    });
+    this.createTodoForm.reset();
     this.isCreateTodoSectionOpen = false;
   }
   onCloseTodoText() {

@@ -1,6 +1,7 @@
 <div class="todo-tile">
   <div class="todo-content">
     <div class="txt-large">{{ todo.todoText }}</div>
+    <div class="txt-large">Category: {{todo.category}}</div>
     <div class="text-italics">
       created on: {{ todo.todoDate | date : "shortDate" }}
     </div>

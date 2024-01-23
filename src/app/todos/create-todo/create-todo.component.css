@@ -5,3 +5,13 @@
   margin-top: 50px;
   margin-bottom: 40px;
 }
+
+.dropdown {
+  padding: 10px;
+  background-color: gray;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin-left: 20px;
+  margin-right: 20px;
+}

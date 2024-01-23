@@ -7,7 +7,7 @@ import { Todo } from '../todos.model';
   styleUrl: './todo.component.css',
 })
 export class TodoComponent {
-  @Input() todo: Todo = { id: 1, todoText: 'text', todoDate: new Date() };
+  @Input() todo: Todo = { id: 1, todoText: 'text', todoDate: new Date(),category:"Personal" };
   @Output() updateTodo = new EventEmitter<{
     todoTextToUpdate: string;
     id: number;

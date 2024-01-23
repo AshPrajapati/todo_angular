@@ -18,8 +18,11 @@ export class TodosService {
     return this.http.delete<void>(this.baseUrl + id);
   }
 
-  addTodo(todoText: string) {
-    return this.http.post(this.baseUrl + 'create', { todoText: todoText });
+  addTodo(addTodo: { toCreateTodoText: string; category: string }) {
+    return this.http.post(this.baseUrl + 'create', {
+      todoText: addTodo.toCreateTodoText,
+      category: addTodo.category,
+    });
   }
 
   updateTodo(todoTextToUpdate: string, id: number) {
