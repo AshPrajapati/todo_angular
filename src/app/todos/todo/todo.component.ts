@@ -1,20 +1,24 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Todo } from '../todos.model';
+import { TodosService } from '../todos.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.css',
 })
-export class TodoComponent {
-  @Input() todo: Todo = { id: 1, todoText: 'text', todoDate: new Date(),category:"Personal" };
-  @Output() updateTodo = new EventEmitter<{
-    todoTextToUpdate: string;
-    id: number;
-  }>();
-  @Output() deleteTodo = new EventEmitter<number>();
+export class TodoComponent implements OnDestroy{
+  @Input() todo: Todo = {
+    id: 1,
+    todoText: 'text',
+    todoDate: new Date(),
+    category: 'Personal',
+  };
   todoTextToUpdate: string = '';
   isUpdatingTodoText: boolean = false;
+  subscriptions: Subscription[] = [];
+  constructor(private todosService: TodosService) {}
 
   onClickUpdateBtn() {
     this.isUpdatingTodoText = true;
@@ -22,7 +26,7 @@ export class TodoComponent {
   }
 
   onUpdateTodoText(id: number) {
-    this.updateTodo.emit({ todoTextToUpdate: this.todoTextToUpdate, id: id });
+    this.updateTodo({ todoTextToUpdate: this.todoTextToUpdate, id: id });
     this.todoTextToUpdate = '';
     this.isUpdatingTodoText = false;
   }
@@ -32,6 +36,22 @@ export class TodoComponent {
   }
 
   onDelete(id: number) {
-    this.deleteTodo.emit(id);
+    this.deleteTodo(id);
+  }
+
+  updateTodo(updateTodo: { todoTextToUpdate: string; id: number }) {
+    this.subscriptions.push(
+      this.todosService
+        .updateTodo(updateTodo.todoTextToUpdate, updateTodo.id)
+        .subscribe()
+    );
+  }
+
+  deleteTodo(id: number): void {
+    this.subscriptions.push(this.todosService.deleteTodo(id).subscribe());
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

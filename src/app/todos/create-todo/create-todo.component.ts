@@ -1,21 +1,19 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TodosService } from '../todos.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-todo',
   templateUrl: './create-todo.component.html',
   styleUrl: './create-todo.component.css',
 })
-export class CreateTodoComponent {
+export class CreateTodoComponent implements OnDestroy{
   isCreateTodoSectionOpen: boolean = false;
   categories: string[] = ['Personal', 'Work', 'Study', 'Other'];
   createTodoForm: FormGroup;
-  @Output() addTodo = new EventEmitter<{
-    toCreateTodoText: string;
-    category: string;
-  }>();
-
-  constructor(private fb: FormBuilder) {
+  subscriptions: Subscription[] = [];
+  constructor(private fb: FormBuilder, private todosService: TodosService) {
     this.createTodoForm = this.fb.group({
       toCreateTodoText: ['', Validators.required],
       category: ['', Validators.required],
@@ -25,7 +23,7 @@ export class CreateTodoComponent {
     this.isCreateTodoSectionOpen = true;
   }
   onAddTodoText() {
-    this.addTodo.emit({
+    this.addTodo({
       toCreateTodoText: this.createTodoForm.get('toCreateTodoText')?.value,
       category: this.createTodoForm.get('category')?.value,
     });
@@ -34,5 +32,13 @@ export class CreateTodoComponent {
   }
   onCloseTodoText() {
     this.isCreateTodoSectionOpen = false;
+  }
+
+  addTodo(addTodo: { toCreateTodoText: string; category: string }) {
+    this.subscriptions.push(this.todosService.addTodo(addTodo).subscribe());
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

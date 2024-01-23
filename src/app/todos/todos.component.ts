@@ -13,28 +13,12 @@ export class TodosComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   constructor(private todosService: TodosService) {}
   ngOnInit(): void {
-    this.fetchTodos();
-  }
-  addTodo(addTodo: { toCreateTodoText: string; category: string }) {
     this.subscriptions.push(
-      this.todosService.addTodo(addTodo).subscribe(() => this.fetchTodos())
-    );
-  }
-
-  updateTodo(updateTodo: { todoTextToUpdate: string; id: number }) {
-    this.subscriptions.push(
-      this.todosService
-        .updateTodo(updateTodo.todoTextToUpdate, updateTodo.id)
-        .subscribe(() => this.fetchTodos())
-    );
-  }
-
-  deleteTodo(id: number): void {
-    this.subscriptions.push(
-      this.todosService.deleteTodo(id).subscribe(() => {
-        this.fetchTodos();
+      this.todosService.todos.subscribe((updatedTodos) => {
+        this.todos = updatedTodos.todos;
       })
     );
+    this.fetchTodos();
   }
 
   fetchTodos() {
