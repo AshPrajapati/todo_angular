@@ -21,8 +21,7 @@ export class TodosService {
 
   deleteTodo(id: number): Observable<void> {
     return this.http
-      .delete<void>(this.baseUrl + id)
-      .pipe(tap(() => this.getTodos().subscribe()));
+      .delete<void>(this.baseUrl + id);
   }
 
   addTodo(addTodo: { toCreateTodoText: string; category: string }) {
@@ -30,15 +29,13 @@ export class TodosService {
       .post(this.baseUrl + 'create', {
         todoText: addTodo.toCreateTodoText,
         category: addTodo.category,
-      })
-      .pipe(tap(() => this.getTodos().subscribe()));
+      });
   }
 
   updateTodo(todoTextToUpdate: string, id: number) {
     return this.http
       .put(this.baseUrl + id, {
         todoTextToUpdate: todoTextToUpdate,
-      })
-      .pipe(tap(() => this.getTodos().subscribe()));
+      });
   }
 }

@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './create-todo.component.html',
   styleUrl: './create-todo.component.css',
 })
-export class CreateTodoComponent implements OnDestroy{
+export class CreateTodoComponent implements OnDestroy {
   isCreateTodoSectionOpen: boolean = false;
   categories: string[] = ['Personal', 'Work', 'Study', 'Other'];
   createTodoForm: FormGroup;
@@ -35,7 +35,11 @@ export class CreateTodoComponent implements OnDestroy{
   }
 
   addTodo(addTodo: { toCreateTodoText: string; category: string }) {
-    this.subscriptions.push(this.todosService.addTodo(addTodo).subscribe());
+    this.subscriptions.push(
+      this.todosService
+        .addTodo(addTodo)
+        .subscribe({ next: () => this.todosService.getTodos().subscribe() })
+    );
   }
 
   ngOnDestroy(): void {

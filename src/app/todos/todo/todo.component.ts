@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
 import { Todo } from '../todos.model';
 import { TodosService } from '../todos.service';
 import { Subscription } from 'rxjs';
@@ -8,7 +14,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.css',
 })
-export class TodoComponent implements OnDestroy{
+export class TodoComponent implements OnDestroy {
   @Input() todo: Todo = {
     id: 1,
     todoText: 'text',
@@ -43,12 +49,16 @@ export class TodoComponent implements OnDestroy{
     this.subscriptions.push(
       this.todosService
         .updateTodo(updateTodo.todoTextToUpdate, updateTodo.id)
-        .subscribe()
+        .subscribe({ next: () => this.todosService.getTodos().subscribe() })
     );
   }
 
   deleteTodo(id: number): void {
-    this.subscriptions.push(this.todosService.deleteTodo(id).subscribe());
+    this.subscriptions.push(
+      this.todosService
+        .deleteTodo(id)
+        .subscribe({ next: () => this.todosService.getTodos().subscribe() })
+    );
   }
 
   ngOnDestroy(): void {
