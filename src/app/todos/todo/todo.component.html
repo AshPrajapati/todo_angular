@@ -1,0 +1,25 @@
+<div class="todo-tile">
+  <div class="todo-content">
+    <div class="txt-large">{{ todo.todoText }}</div>
+    <div class="text-italics">
+      created on: {{ todo.todoDate | date : "shortDate" }}
+    </div>
+  </div>
+  <div class="button-container" *ngIf="!isUpdatingTodoText">
+    <button class="btn btn-primary" (click)="onClickUpdateBtn()">Update</button>
+    <button class="btn btn-danger" (click)="onDelete(todo.id)">Delete</button>
+  </div>
+  <div *ngIf="isUpdatingTodoText" class="update-section">
+    <input type="text" placeholder="todo text" [(ngModel)]="toUpdateTodoText" />
+    <button
+      class="btn btn-primary"
+      (click)="onUpdateTodoText(todo.id)"
+      [disabled]="!toUpdateTodoText"
+    >
+      Update
+    </button>
+    <button class="btn btn-danger" (click)="onCloseUpdateTodoText()">
+      Close
+    </button>
+  </div>
+</div>

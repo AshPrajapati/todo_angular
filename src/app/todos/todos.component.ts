@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Todo } from './todos.model';
 import { TodosService } from './todos.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-todos',
@@ -11,55 +11,22 @@ import { Subscription } from 'rxjs';
 export class TodosComponent implements OnInit, OnDestroy {
   todos: Todo[] = [];
   subscriptions: Subscription[] = [];
-  isCreateTodoSectionOpen: boolean = false;
-  isUpdatingTodoText: {[key:number]:boolean} = {};
-  toCreateTodoText: string = '';
-  toUpdateTodoText: string = '';
   constructor(private todosService: TodosService) {}
   ngOnInit(): void {
     this.fetchTodos();
   }
-
-  onClickCreateNewTodo() {
-    this.isCreateTodoSectionOpen = true;
-  }
-
-  onAddTodoText() {
-    this.addTodo(this.toCreateTodoText);
-    this.isCreateTodoSectionOpen = false;
-    this.toCreateTodoText = '';
-  }
-
   addTodo(todoText: string) {
     this.subscriptions.push(
       this.todosService.addTodo(todoText).subscribe(() => this.fetchTodos())
     );
   }
 
-  onUpdateTodoText(id: number) {
-    this.updateTodo(this.toUpdateTodoText, id);
-    this.isUpdatingTodoText[id] = false;
-    this.toUpdateTodoText = '';
-  }
-
-  updateTodo(todoText: string, id: number) {
+  updateTodo(updateTodo: { todoTextToUpdate: string; id: number }) {
     this.subscriptions.push(
       this.todosService
-        .updateTodo(todoText, id)
+        .updateTodo(updateTodo.todoTextToUpdate, updateTodo.id)
         .subscribe(() => this.fetchTodos())
     );
-  }
-
-  onCloseTodoText() {
-    this.isCreateTodoSectionOpen = false;
-  }
-
-  onCloseUpdateTodoText(id:number) {
-    this.isUpdatingTodoText[id] = false;
-  }
-
-  onClickUpdateBtn(id:number) {
-    this.isUpdatingTodoText[id] = true;
   }
 
   onDelete(id: number): void {

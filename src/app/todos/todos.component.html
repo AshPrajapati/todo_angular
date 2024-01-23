@@ -1,42 +1,8 @@
-<div class="create-todo-container">
-  <button class="btn btn-primary" (click)="onClickCreateNewTodo()">
-    Create New Todo
-  </button>
-  <div *ngIf="isCreateTodoSectionOpen">
-    <input type="text" placeholder="todo text" [(ngModel)]="toCreateTodoText" />
-    <button
-      class="btn btn-primary"
-      (click)="onAddTodoText()"
-      [disabled]="!toCreateTodoText"
-    >
-      Add
-    </button>
-    <button class="btn btn-danger" (click)="onCloseTodoText()">Close</button>
-  </div>
-</div>
-
-<div *ngFor="let todo of todos" class="todo-tile">
-  <div class="todo-content">
-    <div class="txt-large">{{ todo.todoText }}</div>
-    <div class="text-italics">created on: {{ todo.todoDate | date : "shortDate" }}</div>
-  </div>
-  <div class="button-container" *ngIf="!isUpdatingTodoText[todo.id]">
-    <button class="btn btn-primary" (click)="onClickUpdateBtn(todo.id)">
-      Update
-    </button>
-    <button class="btn btn-danger" (click)="onDelete(todo.id)">Delete</button>
-  </div>
-  <div *ngIf="isUpdatingTodoText[todo.id]" class="update-section">
-    <input type="text" placeholder="todo text" [(ngModel)]="toUpdateTodoText" />
-    <button
-      class="btn btn-primary"
-      (click)="onUpdateTodoText(todo.id)"
-      [disabled]="!toUpdateTodoText"
-    >
-      Update
-    </button>
-    <button class="btn btn-danger" (click)="onCloseUpdateTodoText(todo.id)">
-      Close
-    </button>
-  </div>
+<app-create-todo (addTodo)="addTodo($event)"></app-create-todo>
+<div *ngFor="let todo of todos">
+  <app-todo
+    [todo]="todo"
+    (updateTodo)="updateTodo($event)"
+    (deleteTodo)="onDelete($event)"
+  ></app-todo>
 </div>

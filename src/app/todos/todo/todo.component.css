@@ -1,0 +1,33 @@
+.todo-tile {
+  border: 2px solid black;
+  margin-bottom: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.todo-content {
+  flex-grow: 1;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+}
+
+.update-section {
+  display: flex;
+  align-items: center;
+}
+
+.txt-large {
+  font-size: larger;
+  font-weight: 800;
+}
+
+.text-italics {
+  font-style: italic;
+  font-size: smaller;
+}
